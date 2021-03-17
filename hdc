@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Exit if number of arguments is too small
+if [ $# -lt 1 ]
+    then 
+    echo "You need a subject to convert"
+    echo "for example 008pilot"
+    echo "hdc 008pilot"
+    exit 1
+fi
+
+subj=${1}
+docker run --rm -it -v /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data:/base nipy/heudiconv:latest -f reproin --bids -o /base/Nifti --files /base/DICOM/${subj}

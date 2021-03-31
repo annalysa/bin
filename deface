@@ -9,12 +9,30 @@ for example: /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IM
 Author: Annalysa Lovos created on 3/31/2021
 COMMENTBLOCK
 
-# copy T1-weighted image to the sourcedata directory for that participant.
-# To: /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING/sourcedata/sub-007joe/anat
-# From /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING/sub-007joe/anat/sub-007joe_T1w.nii.gz
-# and also get: /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING/sub-007joe/anat/sub-007joe_T1w.json
+if [ $# -lt 1 ]; then
+  echo "This script requires one argument (the subject; for example: sub-007joe)"
+  echo "Docker must be installed and running"
+  echo "The data must be in BIDs format"
+  echo "Please navigate to the main BIDS directory."
+  echo "for example, cd /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING"
+  exit 1
+fi
 
- 
- # docker run -it --rm -v "${PWD}":/scif/data/deface_fs diannepat/scif_fsl run deface_fs ${T1w_img}
+subj=${1} 
 
- mv /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING/sub-007joe/anat/sub-007joe_T1w_defaced.nii.gz /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING/sub-007joe/anat/sub-007joe_T1w.nii.gz
+# copy T1 into source data directory, along with its json:
+cp ${subj}/anat/${subj}_T1w.nii.gz sourcedata/${subj}/anat/${subj}_T1w.nii.gz
+cp ${subj}/anat/${subj}_T1w.json sourcedata/${subj}/anat/${subj}_T1w.json
+# go into anat directory in order to run the defacing:
+cd ${subj}/anat
+# Check that there is nothing in the anat directory already called deface:
+if [ -e ${subj}_T1w_defacemask.nii.gz ] 
+  then 
+  echo "You have already defaced this image."
+  exit 1
+fi
+
+# Docker deface, from DKP:
+docker run -it --rm -v "${PWD}":/scif/data/deface_fs diannepat/scif_fsl run deface_fs ${subj}_T1w.nii.gz
+# rename the defaced image with the original name:
+mv ${subj}_T1w_defaced.nii.gz ${subj}_T1w.nii.gz

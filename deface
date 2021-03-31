@@ -1,0 +1,20 @@
+#!/bin/bash
+
+: <<COMMENTBLOCK
+This script will deface T1 images and move the originals into the 
+source data directory, while renaming the defaced T1s with 
+the original T1 name. 
+To run this script, please navigate to your BIDS directory, 
+for example: /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING
+Author: Annalysa Lovos created on 3/31/2021
+COMMENTBLOCK
+
+# copy T1-weighted image to the sourcedata directory for that participant.
+# To: /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING/sourcedata/sub-007joe/anat
+# From /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING/sub-007joe/anat/sub-007joe_T1w.nii.gz
+# and also get: /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING/sub-007joe/anat/sub-007joe_T1w.json
+
+ 
+ # docker run -it --rm -v "${PWD}":/scif/data/deface_fs diannepat/scif_fsl run deface_fs ${T1w_img}
+
+ mv /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING/sub-007joe/anat/sub-007joe_T1w_defaced.nii.gz /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING/sub-007joe/anat/sub-007joe_T1w.nii.gz

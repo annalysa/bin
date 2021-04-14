@@ -1,0 +1,43 @@
+#!/bin/bash
+
+: <<COMMENTBLOCK
+This script will run fsl_anat on a defaced T1w image in the derivatives directory. It will first 
+check that the T1w image has been defaced. It will then check for the existence of 
+derivatives/fsl_anat_proc and for the indicated subject number; 
+for example, looking for something like the folowing: fsl_anat_proc/${subj}/anat/${subj}_T1w.nii.gz
+If this file does not exist, it will create the directory and put the T1 image in the directory. 
+Then it will run fsl_anat on it. To run this script, please navigate to your BIDS directory, 
+for example: /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING
+Author: Annalysa Lovos created on 4/14/2021
+COMMENTBLOCK
+
+if [ $# -lt 1 ]; then
+  echo "This script requires one argument (the subject; for example: sub-007joe)"
+  echo "The data must be in BIDs format"
+  echo "Please navigate to the main BIDS directory."
+  echo "for example, cd /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING"
+  exit 1
+fi
+
+subj=${1} 
+
+# Check that this participant's T1w image has already been defaced:
+if [ ! -e ${subj}/anat/${subj}_T1w_defacemask.nii.gz ]; then 
+  echo "You have not defaced this image yet; anat_proc will not run."
+  exit 1
+fi
+
+# Check for derivatives/fsl_anat_proc/${subj}; add if it does not exist:
+if [ ! -e derivatives/fsl_anat_proc/${subj}/${subj}_T1w.nii.gz ]; then 
+  mkdir -p derivatives/fsl_anat_proc/${subj}
+  cp ${subj}/anat/${subj}_T1w.nii.gz derivatives/fsl_anat_proc/${subj}
+fi
+
+# Check whether fsl_anat has already been run; run fsl_anat if not or exit if it has:
+cd derivatives/fsl_anat_proc/${subj}
+if [ ! -d ${subj}_T1w.anat ]; then 
+  fsl_anat -i ${subj}_T1w.nii.gz
+  else
+  echo "fsl_anat has already been run for this subject."
+  exit 1
+fi 

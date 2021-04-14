@@ -36,6 +36,7 @@ fi
 # Check whether fsl_anat has already been run; run fsl_anat if not or exit if it has:
 cd derivatives/fsl_anat_proc/${subj}
 if [ ! -d ${subj}_T1w.anat ]; then 
+  echo "Running fsl_anat now."
   fsl_anat -i ${subj}_T1w.nii.gz
   else
   echo "fsl_anat has already been run for this subject."

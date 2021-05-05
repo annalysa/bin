@@ -32,14 +32,15 @@ input=${1}
 if [ $# -eq 1 ] && [ ${input} = "group" ]; then
   echo "Group results will be calculated and"
   echo "placed in derivatives/mriqc/group_bold.html and *.tsv, group_T1w.html and *.tsv"
-  docker run -it --rm -v ${PWD}:/data:ro -v ${PWD}/derivatives/mriqc:/out poldracklab/mriqc:latest /data /out group
+  # previosly in this script but replacing with line below: docker run -it --rm -v ${PWD}:/data:ro -v ${PWD}/derivatives/mriqc:/out poldracklab/mriqc:latest /data /out group
+  docker run -it --rm -v ${PWD}/MDD-IMAGING:/data:ro -v ${PWD}/derivatives/mriqc:/out poldracklab/mriqc:latest /data /out group
   ls ${PWD}/derivatives/mriqc/group*
 # If the argument is anything other than "group", assume it is participant label(s)
 elif [ ! ${input} = "group" ]; then
   echo "The subject directory for sub-${input} will be evaluated and the results"
   echo "placed in derivatives/mriqc/sub-${input}"
   # Including "" around PWD ensures it will handle spaces in the path names.
-  docker run -it --rm -v "${PWD}":/data:ro -v "${PWD}"/derivatives/mriqc:/out poldracklab/mriqc:latest /data /out participant --participant_label ${*} --verbose-reports --ica -w /out/mriqc_work
+  docker run -it --rm -v ${PWD}/MDD-IMAGING:/data:ro -v "${PWD}"/derivatives/mriqc:/out poldracklab/mriqc:latest /data /out participant --participant_label ${*} --verbose-reports --ica -w /out/mriqc_work
 
 # For anything else, spit out the help message and stop.
 else

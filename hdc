@@ -10,4 +10,5 @@ if [ $# -lt 1 ]
 fi
 
 subj=${1}
-docker run --rm -it -v /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data:/base nipy/heudiconv:latest -f reproin --bids -o /base/Nifti --files /base/DICOM/${subj}
+# docker run --rm -it -v /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data:/base nipy/heudiconv:latest -f reproin --bids -o /base/Nifti --files /base/DICOM/${subj} --minmeta
+docker run --rm -it -v /Users/aklovos/Documents/Imaging_Teens_Output/Data:/base nipy/heudiconv:latest -f reproin --bids -o /base/Nifti --files /base/DICOM/${subj} --minmeta

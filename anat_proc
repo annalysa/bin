@@ -7,7 +7,7 @@ derivatives/fsl_anat_proc and for the indicated subject number;
 for example, looking for something like the folowing: fsl_anat_proc/${subj}/anat/${subj}_T1w.nii.gz
 If this file does not exist, it will create the directory and put the T1 image in the directory. 
 Then it will run fsl_anat on it. To run this script, please navigate to your BIDS directory, 
-for example: /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING
+for example: /Users/aklovos/Documents/Imaging_Teens_Output/Data/Nifti/Edgin/MDD-IMAGING
 Author: Annalysa Lovos created on 4/14/2021
 COMMENTBLOCK
 
@@ -15,7 +15,7 @@ if [ $# -lt 1 ]; then
   echo "This script requires one argument (the subject; for example: sub-007joe)"
   echo "The data must be in BIDs format"
   echo "Please navigate to the main BIDS directory."
-  echo "for example, cd /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING"
+  echo "for example, cd /Users/aklovos/Documents/Imaging_Teens_Output/Data/Nifti/Edgin/MDD-IMAGING"
   exit 1
 fi
 
@@ -28,9 +28,10 @@ if [ ! -e ${subj}/anat/${subj}_T1w_defacemask.nii.gz ]; then
 fi
 
 # Check for derivatives/fsl_anat_proc/${subj}; add if it does not exist:
+cd ..
 if [ ! -e derivatives/fsl_anat_proc/${subj}/${subj}_T1w.nii.gz ]; then 
   mkdir -p derivatives/fsl_anat_proc/${subj}
-  cp ${subj}/anat/${subj}_T1w.nii.gz derivatives/fsl_anat_proc/${subj}
+  cp MDD-IMAGING/${subj}/anat/${subj}_T1w.nii.gz derivatives/fsl_anat_proc/${subj}
 fi
 
 # Check whether fsl_anat has already been run; run fsl_anat if not or exit if it has:

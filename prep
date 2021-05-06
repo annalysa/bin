@@ -5,7 +5,7 @@ This script will remove everything from the anat directory that contains "scout"
 for example, sub-th01_scout__dup-023.json.
 Following this, the script will call the deface script, and then finally the anat_proc script.
 To run this script, please navigate to your BIDS directory, 
-for example: /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING
+for example: /Users/aklovos/Documents/Imaging_Teens_Output/Data/Nifti/Edgin/MDD-IMAGING
 Author: Annalysa Lovos created on 4/21/2021
 COMMENTBLOCK
 
@@ -13,7 +13,7 @@ if [ $# -lt 1 ]; then
   echo "This script requires one argument (the subject; for example: sub-007joe)"
   echo "The data must be in BIDs format"
   echo "Please navigate to the main BIDS directory."
-  echo "for example, cd /Volumes/edgin/DSRG/Imaging_Teens_Study_NIH/Data/Nifti/Edgin/MDD-IMAGING"
+  echo "for example, cd /Users/aklovos/Documents/Imaging_Teens_Output/Data/Nifti/Edgin/MDD-IMAGING"
   exit 1
 fi
 
